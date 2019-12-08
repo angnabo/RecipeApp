@@ -1,0 +1,43 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+<div class="container">
+    <h1 class="title"> Recipes </h1>
+
+    {% if recipe_list %}
+    <table class="table is-bordered is-striped">
+        <thead>
+            <tr>
+                <th>Recipe</th>
+                <th>Likes</th>
+            <tr>
+        </thead>
+        <tbody>
+            {% for recipe in recipe_list %}
+            <tr>
+                <td><a href="{% url 'recipes:details' recipe.id %}">{{ recipe.name }}</a></td>
+                <td>{{recipe.likes}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No recipes found.</p>
+    {% endif %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if recipe_list.has_previous %}
+            <a href="?page=1">&laquo; first </a>
+            <a href="?page={{recipe_list.previous_page_number}}">previous</a>
+            {% endif %}
+            <span class="current"> Page {{recipe_list.number}} of {{recipe_list.paginator.num_pages}}.
+            </span>
+            {% if recipe_list.has_next %}
+            <a href="?page={{recipe_list.next_page_number}}">next</a>
+            <a href="?page={{recipe_list.paginator.num_pages}}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

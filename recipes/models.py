@@ -6,6 +6,6 @@ class Recipe(models.Model):
     name = models.CharField(max_length=250)
     content = models.TextField()
     created_date = models.DateTimeField('created_date')
-    likes = models.IntegerField('')
+    likes = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 

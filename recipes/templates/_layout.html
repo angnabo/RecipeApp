@@ -1,0 +1,17 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title> Comment App </title> <!-- Stylesheets here -->
+
+
+        <link rel="stylesheet" type="text/css" href="{% static 'bulma.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+  {% block body %}{% endblock %}
+</body>
