@@ -3,6 +3,8 @@ from django.http import Http404
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+
+from recipes.forms import RecipeForm
 from .models import Recipe
 
 
@@ -13,6 +15,11 @@ def index(request):
     recipes = paginator.get_page(page)
     context = {'recipe_list': recipes}
     return render(request, 'recipes/index.html', context)
+
+
+def add(request):
+    form = RecipeForm()
+    return render(request, 'recipes/recipe_form.html', {'form': form})
 
 
 def details(request, recipe_id):
