@@ -3,8 +3,8 @@
 {% block body %}
 <div class="container">
     <h1 class="title">New Recipe</h1>
-
-    <form method="post" class="width-50">
+    <form action="{% url 'recipes:add' %}" method="post" class="width-50">
+        {% csrf_token %}
         <div class="field">
             <label class="label">{{ form.name.label }}</label>
             <div class="control">
@@ -18,9 +18,7 @@
                 <textarea class="textarea" name="{{ form.content.html_name }}"></textarea>
             </div>
         </div>
-
+        <input class="submit" type="submit" value="Add Recipe">
     </form>
-
-
 </div>
 {% endblock %}

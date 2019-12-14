@@ -1,10 +1,10 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import Http404
+from datetime import datetime, timezone
+
+from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-
-from recipes.forms import RecipeForm
+from recipeApp.recipes.forms import RecipeForm
 from .models import Recipe
 
 
@@ -18,8 +18,20 @@ def index(request):
 
 
 def add(request):
-    form = RecipeForm()
-    return render(request, 'recipes/recipe_form.html', {'form': form})
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
+
+        if form.is_valid():
+            recipe = form.save(commit=False)
+            recipe.created_date = datetime.now(timezone.utc)
+            recipe.likes = 0
+            user = request.user
+            recipe.save()
+            return HttpResponseRedirect('/recipes')
+    else:
+
+        form = RecipeForm()
+        return render(request, 'recipes/recipe_form.html', {'form': form})
 
 
 def details(request, recipe_id):

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from recipes.models import Recipe
+from recipeApp.recipes.models import Recipe
 
 
 class RecipeForm(ModelForm):
