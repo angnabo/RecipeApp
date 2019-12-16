@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class Users1Config(AppConfig):
-    name = 'users'
+class UsersConfig(AppConfig):
+    name = 'recipeApp.users'

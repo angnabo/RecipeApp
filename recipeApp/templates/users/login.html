@@ -2,24 +2,24 @@
 
 {% block body %}
 <div class="container">
-    <h1 class="title">New Recipe</h1>
+    <h1 class="title">Login</h1>
 
     <form action="{% url 'users:login' %}" method="post" class="width-50">
         {% csrf_token %}
         <div class="field">
-            <label class="label">{{ form.email.label }}</label>
+            <label class="label">{{ form.username.label }}</label>
             <div class="control">
-                <input class="input" type="text" placeholder="Email" name="{{ form.email.html_name }}">
+                <input class="input" type="text" placeholder="Username" name="{{ form.username.html_name }}">
             </div>
         </div>
 
         <div class="field">
-            <label class="label">{{ form.content.label }}</label>
+            <label class="label">{{ form.pasword.label }}</label>
             <div class="control">
-                <input class="input" type="password" name="{{ form.email.html_name }}">
+                <input class="input" type="password" name="{{ form.password.html_name }}">
             </div>
         </div>
-        <input class="submit" type="submit" value="Add Recipe">
+        <input class="submit" type="submit" value="Login">
     </form>
 
 
