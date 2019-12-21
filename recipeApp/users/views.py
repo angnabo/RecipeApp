@@ -16,11 +16,11 @@ def signUp(request):
         form = UserSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            email = form.email
-            password = form.password1
-            user = authenticate(email=email, password=password)
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username,  password=password)
             login(request, user)
-            return redirect('home')
+            return redirect('/recipes')
     else:
         form = UserSignupForm()
     return render(request, 'users/signup.html', {'form': form})

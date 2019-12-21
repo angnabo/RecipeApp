@@ -1,33 +1,15 @@
 {% extends "_layout.html" %}
+{% load bulma_tags %}
 
 {% block body %}
 <div class="container">
-    <h1 class="title">New Recipe</h1>
-
+    <h1 class="title">Sign up</h1>
     <form action="{% url 'users:signup' %}" method="post" class="width-50">
-        {% csrf_token %}
+           {% csrf_token %}
+        {{ form|bulma }}
         <div class="field">
-            <label class="label">{{ form.email.label }}</label>
-            <div class="control">
-                <input class="input" type="text" placeholder="Email" name="{{ form.email.html_name }}">
-            </div>
+            <button type="submit" class="button is-primary">Sign up</button>
         </div>
-
-        <div class="field">
-            <label class="label">{{ form.password1.label }}</label>
-            <div class="control">
-                <input class="input" type="password" name="{{ form.password1.html_name }}">
-            </div>
-        </div>
-                <div class="field">
-            <label class="label">{{ form.password2.label }}</label>
-            <div class="control">
-                <input class="input" type="password" name="{{ form.password2.html_name }}">
-            </div>
-        </div>
-        <input class="submit" type="submit" value="Sign up">
     </form>
-
-
 </div>
 {% endblock %}
