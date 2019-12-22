@@ -1,0 +1,32 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item">
+            <h1 class="title">Recipe Book</h1>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="{%  url 'recipes:index' %}">Home</a>
+        </div>
+
+        {% if request.user.is_authenticated %}
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" href="{%  url 'users:logout' %}">Log out</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" href="{%  url 'users:signup' %}"><strong>Sign up</strong></a>
+                        <a class="button is-light" href="{%  url 'users:login' %}">Log in</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</nav>

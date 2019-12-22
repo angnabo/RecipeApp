@@ -5,7 +5,7 @@
 <div class="container">
     <h1 class="title">Sign up</h1>
     <form action="{% url 'users:signup' %}" method="post" class="width-50">
-           {% csrf_token %}
+        {% csrf_token %}
         {{ form|bulma }}
         <div class="field">
             <button type="submit" class="button is-primary">Sign up</button>

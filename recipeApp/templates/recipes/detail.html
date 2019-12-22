@@ -1,10 +1,17 @@
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% extends "_layout.html" %}
 
-<h1>{{ recipe.name }}</h1>
-<h2>{{ recipe.content }}</h2>
-<p>Likes: {{recipe.likes}}</p>
+{% block body %}
+    <div class="container">
 
-<form action="{% url 'recipes:like' recipe.id %}" method="post">
-{% csrf_token %}
-<input type="submit" value="Like">
-</form>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+        <h1 class="title">{{ recipe.name }}</h1>
+        <div class="box"><p style="white-space: pre-wrap">{{ recipe.content }}</p></div>
+        <p>Likes: {{ recipe.likes }}</p>
+
+        <form action="{% url 'recipes:like' recipe.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="button is-primary" value="Like">
+        </form>
+    </div>
+{% endblock %}
