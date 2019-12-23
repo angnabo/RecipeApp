@@ -1,0 +1,21 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+    <div class="container">
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <div style="padding: 20px">
+            <h1 class="title display-inline">{{ recipe.name }}</h1>
+            <a aria-label="edit" class="button display-inline has-tooltip-right" data-tooltip="Edit" href="{% url 'recipes:edit' recipe_id=recipe.id %}">
+                <ion-icon name="create"></ion-icon>
+            </a>
+        </div>
+        <div class="box"><p class="whitespace-pre-wrap">{{ recipe.content }}</p></div>
+        <p>Likes: {{ recipe.likes }}</p>
+
+        <form action="{% url 'recipes:like' recipe.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="button is-primary" value="Like">
+        </form>
+    </div>
+{% endblock %}

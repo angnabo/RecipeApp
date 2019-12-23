@@ -1,0 +1,20 @@
+<div class="prev_next">
+    {% if blogs.has_previous %}
+        <a class="prev btn btn-info" href="?page={{blogs.previous_page_number}}">Prev</a>
+    {% endif %}
+    {% if blogs.has_next %}
+        <a class="next btn btn-info" href="?page={{blogs.next_page_number}}">Next</a>
+    {% endif %}
+    <div class="pages">
+        <ul>
+        {% for pg in page_range %}
+            {% if blogs.number == pg %}
+                <li><a href="?page={{pg}}" class="btn btn-default">{{pg}}</a></li>
+            {% else %}
+                <li><a href="?page={{pg}}" class="btn">{{pg}}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+    <span class="clear_both"></span>
+</div>
