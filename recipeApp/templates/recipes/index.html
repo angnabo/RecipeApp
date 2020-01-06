@@ -25,34 +25,7 @@
             <p>No recipes found.</p>
         {% endif %}
 
-        <nav class="pagination is-centered margin-20" role="navigation" aria-label="pagination">
-            {% if recipe_list.has_previous %}
-                <a class="pagination-previous" href="?page={{ recipe_list.previous_page_number }}">Previous</a>
-            {% endif %}
-            {% if recipe_list.has_next %}
-                <a class="pagination-next" href="?page={{ recipe_list.next_page_number }}">Next</a>
-            {% endif %}
-
-            <ul class="pagination-list">
-                {% if recipe_list.number|add:-1 >= 2 %}
-                    <li><a class="pagination-link" href="?page=1">1</a></li>
-                    <li><span class="pagination-ellipsis">&hellip;</span></li>
-                {% endif %}
-                {% for num in recipe_list.paginator.page_range %}
-                    {% if recipe_list.number == num %}
-                        <li><a class="pagination-link is-current" href="?page={{ num }}">{{ num }}</a></li>
-                    {% elif num == recipe_list.number|add:1 %}
-                        <li><a class="pagination-link" href="?page={{ num }}">{{ num }}</a></li>
-                    {% elif num == recipe_list.number|add:-1 %}
-                        <li><a class="pagination-link" href="?page={{ num }}">{{ num }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if recipe_list.paginator.num_pages|add:-2 >= recipe_list.number %}
-                    <li><span class="pagination-ellipsis">&hellip;</span></li>
-                    <li><a class="pagination-link" href="?page={{ recipe_list.paginator.num_pages }}">{{ recipe_list.paginator.num_pages }}</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        {% include "_pagination.html" with list=recipe_list %}
 
         <a href="{% url 'recipes:add' %}">
             <button class="button is-primary">Add Recipe</button>
