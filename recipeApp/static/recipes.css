@@ -17,3 +17,12 @@
 .display-inline {
     display: inline;
 }
+
+html{
+    height: 100%;
+}
+
+.page-container{
+    position: relative;
+    height: 80%;
+}

@@ -1,4 +1,4 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item">
             <h1 class="title">Recipe Book</h1>
@@ -12,6 +12,9 @@
 
         {% if request.user.is_authenticated %}
             <div class="navbar-end">
+                <div class="navbar-item">
+                    <span>You are logged in as: {{ user.get_username }}</span>
+                </div>
                 <div class="navbar-item">
                     <div class="buttons">
                         <a class="button is-light" href="{%  url 'users:logout' %}">Log out</a>

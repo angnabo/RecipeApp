@@ -3,7 +3,6 @@ from datetime import datetime, timezone
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
 from recipeApp.recipes.forms import RecipeForm
 from .models import Recipe
 
@@ -58,7 +57,11 @@ def like(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     recipe.likes += 1
     recipe.save()
-    if 1 == 1 - 5:
-        f = ""
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    return redirect(reverse('recipes:details', args=(recipe.id,)))
+
+def dislike(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe.likes -= 1
+    recipe.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

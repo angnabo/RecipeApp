@@ -1,22 +1,44 @@
 {% extends "_layout.html" %}
 
 {% block body %}
-    <div class="container">
+    <div class="container page-container">
         <h1 class="title"> Recipes </h1>
 
         {% if recipe_list %}
-            <table class="table is-bordered is-striped">
+            <table class="table is-striped is-fullwidth">
                 <thead>
                 <tr>
                     <th>Recipe</th>
                     <th>Likes</th>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 <tr>
                 </thead>
                 <tbody>
                 {% for recipe in recipe_list %}
-                    <tr>
-                        <td><a href="{% url 'recipes:details' recipe.id %}">{{ recipe.name }}</a></td>
+                    <tr style="line-height:60px;">
+                        <td style="width:50%"><a href="{% url 'recipes:details' recipe.id %}">{{ recipe.name }}</a></td>
                         <td>{{ recipe.likes }}</td>
+                        <td>{{ recipe.user.get_username }}</td>
+                        <td>{{ recipe.created_date }}</td>
+                        <td>
+                            <a style="margin-top:10px;" aria-label="view" class="button" href="{% url 'recipes:details' recipe.id %}">
+                                <ion-icon name="eye"></ion-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <a style="margin-top:10px;" aria-label="like" class="button" href="{% url 'recipes:like' recipe.id %}">
+                                <ion-icon name="thumbs-up"></ion-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <a style="margin-top:10px;" aria-label="dislike" class="button" href="{% url 'recipes:dislike' recipe.id %}">
+                                <ion-icon name="thumbs-down"></ion-icon>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -25,10 +47,11 @@
             <p>No recipes found.</p>
         {% endif %}
 
-        {% include "_pagination.html" with list=recipe_list %}
+
 
         <a href="{% url 'recipes:add' %}">
             <button class="button is-primary">Add Recipe</button>
         </a>
     </div>
+    {% include "_pagination.html" with list=recipe_list %}
 {% endblock %}
