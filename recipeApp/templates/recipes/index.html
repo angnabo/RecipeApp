@@ -25,17 +25,19 @@
                         <td>{{ recipe.user.get_username }}</td>
                         <td>{{ recipe.created_date }}</td>
                         <td>
-                            <a style="margin-top:10px;" aria-label="view" class="button" href="{% url 'recipes:details' recipe.id %}">
+                            <a aria-label="view" class="button margin-top-10"
+                               href="{% url 'recipes:details' recipe.id %}">
                                 <ion-icon name="eye"></ion-icon>
                             </a>
                         </td>
                         <td>
-                            <a style="margin-top:10px;" aria-label="like" class="button" href="{% url 'recipes:like' recipe.id %}">
+                            <a aria-label="like" class="button margin-top-10" href="{% url 'recipes:like' recipe.id %}">
                                 <ion-icon name="thumbs-up"></ion-icon>
                             </a>
                         </td>
                         <td>
-                            <a style="margin-top:10px;" aria-label="dislike" class="button" href="{% url 'recipes:dislike' recipe.id %}">
+                            <a aria-label="dislike" class="button margin-top-10"
+                               href="{% url 'recipes:dislike' recipe.id %}">
                                 <ion-icon name="thumbs-down"></ion-icon>
                             </a>
                         </td>
@@ -47,11 +49,11 @@
             <p>No recipes found.</p>
         {% endif %}
 
-
-
         <a href="{% url 'recipes:add' %}">
             <button class="button is-primary">Add Recipe</button>
         </a>
     </div>
+
     {% include "_pagination.html" with list=recipe_list %}
+
 {% endblock %}

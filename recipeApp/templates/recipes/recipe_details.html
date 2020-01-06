@@ -6,8 +6,11 @@
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <div style="padding: 20px">
             <h1 class="title display-inline">{{ recipe.name }}</h1>
-            <a aria-label="edit" class="button display-inline has-tooltip-right" data-tooltip="Edit" href="{% url 'recipes:edit' recipe_id=recipe.id %}">
+            <a aria-label="edit" class="button display-inline has-tooltip-right" data-tooltip="Edit" href="{% url 'recipes:edit' recipe.id %}">
                 <ion-icon name="create"></ion-icon>
+            </a>
+            <a aria-label="delete" class="button margin-left-10 display-inline has-tooltip-right" data-tooltip="Delete" href="{% url 'recipes:delete' recipe.id %}">
+                <ion-icon name="trash"></ion-icon>
             </a>
         </div>
         <div class="box"><p class="whitespace-pre-wrap">{{ recipe.content }}</p></div>

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bulma',
+    'crispy_forms',
+    'django_crispy_bulma'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'recipeApp/static'),
 ]
+
+CRISPY_TEMPLATE_PACK = 'bulma'

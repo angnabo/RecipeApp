@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('add', views.add, name='add'),
     path('<int:recipe_id>/edit/', views.edit, name='edit'),
+    path('<int:recipe_id>/delete/', views.delete, name='delete'),
     path('<int:recipe_id>/', views.details, name='details'),
     path('<int:recipe_id>/like/', views.like, name='like'),
     path('<int:recipe_id>/dislike/', views.dislike, name='dislike')

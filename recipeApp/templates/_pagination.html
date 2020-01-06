@@ -1,4 +1,6 @@
-<nav class="pagination is-centered margin-20 float-bottom" role="navigation" aria-label="pagination">
+{#Adapted from: Rob L, (2017). Retrieved on Dec 2019, from: https://stackoverflow.com/questions/30864011/display-only-some-of-the-page-numbers-by-django-pagination #}
+
+<nav class="pagination is-centered margin-20 list-pagination" role="navigation" aria-label="pagination">
     {% if list.has_previous %}
         <a class="pagination-previous" href="?page={{ list.previous_page_number }}">Previous</a>
     {% endif %}

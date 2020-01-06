@@ -10,6 +10,14 @@
     margin: 20px;
 }
 
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-left-10{
+    margin-left: 10px;
+}
+
 .whitespace-pre-wrap {
     white-space: pre-wrap;
 }
@@ -18,11 +26,9 @@
     display: inline;
 }
 
-html{
-    height: 100%;
-}
-
-.page-container{
-    position: relative;
-    height: 80%;
+.list-pagination{
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
 }

@@ -20,6 +20,7 @@ def add(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
+            form.full_clean()
             recipe = form.save(commit=False)
             recipe.created_date = datetime.now(timezone.utc)
             recipe.likes = 0
@@ -27,9 +28,11 @@ def add(request):
             recipe.user = user
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)
+        else:
+            return render(request, 'recipes/add_recipe.html', {'form': form, 'title': 'Add Recipe'})
     else:
         form = RecipeForm()
-        return render(request, 'recipes/add_recipe.html', {'form': form})
+        return render(request, 'recipes/add_recipe.html', {'form': form, 'title': 'Add Recipe'})
 
 
 def edit(request, recipe_id):
@@ -38,14 +41,18 @@ def edit(request, recipe_id):
         form = RecipeForm(request.POST, instance=recipe)
         if form.is_valid():
             recipe = form.save(commit=False)
-            user = request.user
-            recipe.user = user
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe_id)
     else:
         recipe = get_object_or_404(Recipe, id=recipe_id)
         form = RecipeForm(request.POST or None, instance=recipe)
-        return render(request, 'recipes/edit_recipe.html', {'form': form})
+        return render(request, 'recipes/add_recipe.html', {'form': form, 'title': 'Edit Recipe'})
+
+
+def delete(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    recipe.delete()
+    return redirect('recipes:index')
 
 
 def details(request, recipe_id):
