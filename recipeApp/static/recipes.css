@@ -2,6 +2,10 @@
     width: 50%;
 }
 
+.width-20 {
+    width: 20%;
+}
+
 .padding-20 {
     padding: 20px;
 }
@@ -24,6 +28,20 @@
 
 .display-inline {
     display: inline;
+}
+
+.search-bar {
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar > p {
+    width: 200px;
+}
+
+.search-bar > *{
+    margin-left: 10px;
 }
 
 .list-pagination{

@@ -4,6 +4,19 @@
     <div class="container page-container">
         <h1 class="title"> Recipes </h1>
 
+
+        <form action="{% url 'recipes:search' %}" method="get">
+            <div class="is-centered search-bar">
+                <p class="control has-icons-left">
+                    <input  name="query" class="input" type="text" placeholder="Search">
+                    <span class="icon is-left"><ion-icon name="search" aria-hidden="true"></ion-icon></span>
+                </p>
+                <a class="display-inline" href="{% url 'recipes:search' %}">
+                    <button type="submit" class="button is-primary">Search</button>
+                </a>
+            </div>
+        </form>
+
         {% if recipe_list %}
             <table class="table is-striped is-fullwidth">
                 <thead>
