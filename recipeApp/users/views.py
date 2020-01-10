@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
 from recipeApp.users.forms import UserLoginForm, UserSignupForm
@@ -20,7 +20,7 @@ def signUp(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username,  password=password)
             login(request, user)
-            return redirect('/recipes')
+            return redirect('recipes:index')
     else:
         form = UserSignupForm()
     return render(request, 'users/signup.html', {'form': form})
@@ -35,7 +35,7 @@ def logIn(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/recipes')
+                return redirect('recipes:index')
         else:
             messages.error(request, "Invalid username or password.")
     else:

@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bulma',
     'crispy_forms',
     'django_crispy_bulma'
 ]
