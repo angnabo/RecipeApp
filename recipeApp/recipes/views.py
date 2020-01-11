@@ -38,8 +38,7 @@ def add(request):
             recipe = form.save(commit=False)
             recipe.created_date = datetime.now(timezone.utc)
             recipe.likes = 0
-            user = request.user
-            recipe.user = user
+            recipe.user = request.user
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)
         else:
@@ -55,11 +54,12 @@ def edit(request, recipe_id):
     if request.method == 'POST':
         form = RecipeForm(request.POST, instance=recipe)
         if form.is_valid():
-            recipe = form.save(commit=False)
-            recipe.save()
+            form.full_clean()
+            form.save()
             return redirect('recipes:details', recipe_id=recipe_id)
+        else:
+            return render(request, 'recipes/add_recipe.html', {'form': form, 'title': 'Edit Recipe'})
     else:
-        recipe = get_object_or_404(Recipe, id=recipe_id)
         form = RecipeForm(request.POST or None, instance=recipe)
         return render(request, 'recipes/add_recipe.html', {'form': form, 'title': 'Edit Recipe'})
 
