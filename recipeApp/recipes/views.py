@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
+
+from recipeApp.recipes.factories import RecipeFactory
 from recipeApp.recipes.forms import RecipeForm
 from .models import Recipe
 
@@ -33,11 +35,7 @@ def add(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            form.full_clean()
-            recipe = form.save(commit=False)
-            recipe.created_date = datetime.now(timezone.utc)
-            recipe.likes = 0
-            recipe.user = request.user
+            recipe = RecipeFactory.create(form, request.user)
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)
         else:
