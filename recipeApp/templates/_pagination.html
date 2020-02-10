@@ -5,10 +5,10 @@
 
 <nav class="pagination is-centered margin-20 list-pagination" role="navigation" aria-label="pagination">
     {% if list.has_previous %}
-        <a class="pagination-previous" href="?page={{ list.previous_page_number }}">Previous</a>
+        <a class="pagination-previous" href="?page={{ list.previous_page_number }}&query={{query}}">Previous</a>
     {% endif %}
     {% if list.has_next %}
-        <a class="pagination-next" href="?page={{ list.next_page_number }}">Next</a>
+        <a class="pagination-next" href="?page={{ list.next_page_number }}&query={{query}}">Next</a>
     {% endif %}
 
     <ul class="pagination-list">
@@ -18,16 +18,16 @@
         {% endif %}
         {% for num in list.paginator.page_range %}
             {% if list.number == num %}
-                <li><a class="pagination-link is-current" href="?page={{ num }}">{{ num }}</a></li>
+                <li><a class="pagination-link is-current" href="?page={{ num }}&query={{query}}">{{ num }}</a></li>
             {% elif num == list.number|add:1 %}
-                <li><a class="pagination-link" href="?page={{ num }}">{{ num }}</a></li>
+                <li><a class="pagination-link" href="?page={{ num }}&query={{query}}">{{ num }}</a></li>
             {% elif num == list.number|add:-1 %}
-                <li><a class="pagination-link" href="?page={{ num }}">{{ num }}</a></li>
+                <li><a class="pagination-link" href="?page={{ num }}&query={{query}}">{{ num }}</a></li>
             {% endif %}
         {% endfor %}
         {% if list.paginator.num_pages|add:-2 >= list.number %}
             <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" href="?page={{ list.paginator.num_pages }}">{{ list.paginator.num_pages }}</a></li>
+            <li><a class="pagination-link" href="?page={{ list.paginator.num_pages }}&query={{query}}">{{ list.paginator.num_pages }}</a></li>
         {% endif %}
     </ul>
 </nav>
