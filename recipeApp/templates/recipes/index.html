@@ -23,6 +23,6 @@
         </a>
     </div>
 
-    {% include "_pagination.html" with list=recipe_list %}
+    {% include "_pagination.html" with list=recipe_list query=request.GET.query|urlencode %}
 
 {% endblock %}

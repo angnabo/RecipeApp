@@ -11,17 +11,16 @@ ORDER_BY_HEADERS = ('name', 'content', 'username', 'date')
 
 @login_required(login_url='users:login')
 def index(request):
-    recipe_list = Recipe.objects.all().order_by('-created_date')
-    paginated_recipes = get_recipes(request, recipe_list)
-    context = {'recipe_list': paginated_recipes}
-    return render(request, 'recipes/index.html', context)
+    return search(request)
 
 
-@login_required(login_url='users:login')
 def search(request):
     query = request.GET.get('query')
     if not query or not query.strip():  # query is empty or whitespace
-        return redirect('recipes:index')
+        recipe_list = Recipe.objects.all().order_by('-created_date')
+        paginated_recipes = get_recipes(request, recipe_list)
+        context = {'recipe_list': paginated_recipes}
+        return render(request, 'recipes/index.html', context)
     else:
         recipe_list = Recipe.objects.filter(name__icontains=query, content__icontains=query).order_by('-created_date')
         paginated_recipes = get_recipes(request, recipe_list)
