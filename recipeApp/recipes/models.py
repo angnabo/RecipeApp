@@ -14,7 +14,10 @@ class Recipe(models.Model):
 
 
 class Comment(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.DO_NOTHING)
+    recipe = models.ForeignKey(Recipe, related_name='comments', on_delete=models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    content = models.TextField(blank=False, validators=[MinLengthValidator(1)])
+    created_date = models.DateTimeField('created_date')
+    likes = models.IntegerField()
 
 

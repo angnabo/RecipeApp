@@ -14,11 +14,23 @@
             </a>
         </div>
         <div class="box"><p class="whitespace-pre-wrap">{{ recipe.content }}</p></div>
+        <p>Author: {{ recipe.author.full_name }}</p>
         <p>Likes: {{ recipe.likes }}</p>
 
-        <form action="{% url 'recipes:like' recipe.id %}" method="post">
+        <form class="padding-20" action="{% url 'recipes:like' recipe.id %}" method="post">
             {% csrf_token %}
             <input type="submit" class="button is-primary" value="Like">
         </form>
+
+        {% include "recipes/add_comment.html" with recipe_id=recipe.id %}
+
+        {% if recipe.comments %}
+            {% for comment in recipe.comments.all %}
+                <div class="box width-50">
+                    <p class="whitespace-pre-wrap">{{ comment.content }}</p>
+                    <p class="whitespace-pre-wrap">Commented by {{ comment.user.username }}, on {{ comment.created_date }}</p>
+                </div>
+        {% endfor %}
+    {% endif %}
     </div>
 {% endblock %}
