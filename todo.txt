@@ -1,0 +1,49 @@
+additional features 
+-internationalisation
+-2FA/email or sms auth
+-hosted
+-scheduled tasks
+-emails(mailtrap.io) - 
+-graphs/charts
+-reporting
+-CD/CI
+-Tests
+-Social Login
+-Complex database relationships
+
+-update readme
+-dont commit venv and .idea
+
+
+Recipe 
+	Name
+	Content
+	Author -> Author
+	CreatedDate
+	Likes
+
+RecipeImage
+	RecipeId
+	ImageId
+
+ImageFile
+	FileId
+	CreatedDate	
+
+Comment 
+	RecipeId
+	Content
+	UserId
+	CreatedDate
+	Likes
+
+Author
+	Name
+	ProfileInfo
+	UserId
+	ImageFile
+
+
+
+
+
