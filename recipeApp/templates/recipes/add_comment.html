@@ -1,0 +1,23 @@
+
+{% block body %}
+
+<div class="container">
+    <h1 class="title">{{title}}</h1>
+    <form method="post" action="{% url 'recipes:add_comment' %}"  class="width-50">
+        {% csrf_token %}
+        <input type="hidden" name="recipe_id" value="{{ recipe_id }}">
+
+        <label class="label">Leave a comment</label>
+        <div class="field">
+            <textarea class="textarea" name="content"></textarea>
+        </div>
+
+        <div class="field">
+            <button type="submit" class="button is-primary">Leave comment</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}
+
+

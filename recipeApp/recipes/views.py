@@ -1,4 +1,3 @@
-from datetime import datetime, timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
@@ -7,6 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from recipeApp.recipes.factories import RecipeFactory
 from recipeApp.recipes.forms import RecipeForm
 from .models import Recipe
+from ..users.models import Author
 
 ORDER_BY_HEADERS = ('name', 'content', 'username', 'date')
 
@@ -35,7 +35,8 @@ def add(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            recipe = RecipeFactory.create(form, request.user)
+            author = get_object_or_404(Author, user_id=request.user.id)
+            recipe = RecipeFactory.create(form, author)
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)
         else:
@@ -95,3 +96,11 @@ def get_recipes(request, recipe_list):
     paginator = Paginator(recipe_list, items_per_page)
     page = request.GET.get('page')
     return paginator.get_page(page)
+
+
+@login_required(login_url='users:login')
+def add_comment(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    recipe.likes -= 1
+    recipe.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
