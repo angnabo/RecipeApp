@@ -1,23 +1,34 @@
 
 {% block body %}
 
-<div class="container">
-    <h1 class="title">{{title}}</h1>
-    <form method="post" action="{% url 'recipes:add_comment' %}"  class="width-50">
+<div class="container padding-vertical-50">
+    <form method="post" action="{% url 'recipes:add_comment' recipe_id %}"  class="width-50">
         {% csrf_token %}
         <input type="hidden" name="recipe_id" value="{{ recipe_id }}">
 
         <label class="label">Leave a comment</label>
         <div class="field">
-            <textarea class="textarea" name="content"></textarea>
+            <textarea class="textarea" id="comment-content" name="content"></textarea>
         </div>
 
         <div class="field">
-            <button type="submit" class="button is-primary">Leave comment</button>
+            <button type="submit" id="comment-submit" class="button is-primary is-pulled-right" disabled>Leave comment</button>
         </div>
 
     </form>
 </div>
 {% endblock %}
 
+<script>
+    $(document).ready(function () {
+        $('#comment-content').on('input', function () {
+            let content = $(this).val();
+            if(content.match(/\S/)){
+                $('#comment-submit').attr('disabled', false);
+            } else {
+                $('#comment-submit').attr('disabled', true);
+            }
+        });
+    })
+</script>
 

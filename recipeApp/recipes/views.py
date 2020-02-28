@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 
-from recipeApp.recipes.factories import RecipeFactory
-from recipeApp.recipes.forms import RecipeForm
+from recipeApp.recipes.factories import RecipeFactory, CommentFactory
+from recipeApp.recipes.forms import RecipeForm, CommentForm
 from .models import Recipe
 from ..users.models import Author
 
@@ -92,7 +92,7 @@ def dislike(request, recipe_id):
 
 
 def get_recipes(request, recipe_list):
-    items_per_page = 5
+    items_per_page = 10
     paginator = Paginator(recipe_list, items_per_page)
     page = request.GET.get('page')
     return paginator.get_page(page)
@@ -100,7 +100,13 @@ def get_recipes(request, recipe_list):
 
 @login_required(login_url='users:login')
 def add_comment(request, recipe_id):
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
-    recipe.likes -= 1
-    recipe.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        user = request.user
+        recipe = get_object_or_404(Recipe, pk=recipe_id)
+        recipe = CommentFactory.create(form, recipe, user)
+        recipe.save()
+        return redirect('recipes:details', recipe_id=recipe_id)
+    else:
+        return redirect('recipes:details', recipe_id=recipe_id)
+

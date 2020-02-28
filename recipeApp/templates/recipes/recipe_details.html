@@ -13,22 +13,24 @@
                 <ion-icon name="trash"></ion-icon>
             </a>
         </div>
-        <div class="box"><p class="whitespace-pre-wrap">{{ recipe.content }}</p></div>
+        <div class="box"><p class="whitespace-pre-wrap has-text-grey-darker">{{ recipe.content }}</p></div>
         <p>Author: {{ recipe.author.full_name }}</p>
         <p>Likes: {{ recipe.likes }}</p>
 
-        <form class="padding-20" action="{% url 'recipes:like' recipe.id %}" method="post">
+        <form class="padding-top-10" action="{% url 'recipes:like' recipe.id %}" method="post">
             {% csrf_token %}
-            <input type="submit" class="button is-primary" value="Like">
+            <input type="submit" class="button" value="Like">
         </form>
 
         {% include "recipes/add_comment.html" with recipe_id=recipe.id %}
 
+        <h5 class="subtitle is-5">Comments</h5>
+
         {% if recipe.comments %}
             {% for comment in recipe.comments.all %}
                 <div class="box width-50">
-                    <p class="whitespace-pre-wrap">{{ comment.content }}</p>
-                    <p class="whitespace-pre-wrap">Commented by {{ comment.user.username }}, on {{ comment.created_date }}</p>
+                    <p class="whitespace-pre-wrap has-text-grey-darker">{{ comment.content }}</p>
+                    <p class="whitespace-pre-wrap is-size-6">Commented by {{ comment.user.username }}, on {{ comment.created_date }}</p>
                 </div>
         {% endfor %}
     {% endif %}

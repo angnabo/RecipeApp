@@ -12,5 +12,5 @@ urlpatterns = [
     path('<int:recipe_id>/', views.details, name='details'),
     path('<int:recipe_id>/like/', views.like, name='like'),
     path('<int:recipe_id>/dislike/', views.dislike, name='dislike'),
-    path('add_comment', views.add_comment, name='add_comment')
+    path('<int:recipe_id>/add_comment/', views.add_comment, name='add_comment')
 ]

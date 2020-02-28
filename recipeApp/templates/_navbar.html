@@ -9,6 +9,9 @@
         <div class="navbar-start">
             <a class="navbar-item" href="{%  url 'recipes:index' %}">Home</a>
         </div>
+        <div class="navbar-start">
+            <a class="navbar-item" href="{%  url 'users:profile' %}">Profile</a>
+        </div>
 
         {% if request.user.is_authenticated %}
             <div class="navbar-end">
