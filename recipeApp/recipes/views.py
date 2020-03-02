@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from recipeApp.recipes.factories import RecipeFactory, CommentFactory
 from recipeApp.recipes.forms import RecipeForm, CommentForm
 from .models import Recipe
-from ..users.models import Author
+from ..users.models import Profile
 
 ORDER_BY_HEADERS = ('name', 'content', 'username', 'date')
 
@@ -35,7 +35,7 @@ def add(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            author = get_object_or_404(Author, user_id=request.user.id)
+            author = get_object_or_404(Profile, user_id=request.user.id)
             recipe = RecipeFactory.create(form, author)
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)

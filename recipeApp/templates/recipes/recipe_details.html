@@ -2,8 +2,6 @@
 
 {% block body %}
     <div class="container">
-
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <div style="padding: 20px">
             <h1 class="title display-inline">{{ recipe.name }}</h1>
             <a aria-label="edit" class="button display-inline has-tooltip-right" data-tooltip="Edit" href="{% url 'recipes:edit' recipe.id %}">
@@ -14,7 +12,7 @@
             </a>
         </div>
         <div class="box"><p class="whitespace-pre-wrap has-text-grey-darker">{{ recipe.content }}</p></div>
-        <p>Author: {{ recipe.author.full_name }}</p>
+        <p>Author: {{ recipe.user.get_full_name }}</p>
         <p>Likes: {{ recipe.likes }}</p>
 
         <form class="padding-top-10" action="{% url 'recipes:like' recipe.id %}" method="post">
@@ -30,7 +28,18 @@
             {% for comment in recipe.comments.all %}
                 <div class="box width-50">
                     <p class="whitespace-pre-wrap has-text-grey-darker">{{ comment.content }}</p>
-                    <p class="whitespace-pre-wrap is-size-6">Commented by {{ comment.user.username }}, on {{ comment.created_date }}</p>
+
+                    <hr class="solid">
+
+                    <div class="columns margin-top-10">
+                        <div class="is-inline">
+                            <img src="{{ comment.user.profile.profile_picture.url }}" class="small-rounded" alt="avatar">
+                        </div>
+
+                        <div class="is-inline is-pulled-left">
+                            <p class="column whitespace-pre-wrap is-size-6">Commented by {{ comment.user.get_full_name }}, on {{ comment.created_date }}</p>
+                        </div>
+                    </div>
                 </div>
         {% endfor %}
     {% endif %}

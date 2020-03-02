@@ -1,15 +1,39 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
+from recipeApp.recipes.models import Recipe
 from recipeApp.users.factories import AuthorFactory
-from recipeApp.users.forms import UserLoginForm, UserSignupForm
+from recipeApp.users.forms import UserLoginForm, UserSignupForm, UserProfileForm
+from recipeApp.users.models import Profile
 
 
 def index(request):
     form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form})
+
+
+def edit_profile(request):
+    profile_object = get_object_or_404(Profile, user=request.user)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile_object)
+        if form.is_valid():
+            form.save()
+            return redirect('recipes:index')
+        else:
+            return render(request, 'users/profile.html', {'form': form})
+    else:
+        form = UserProfileForm(request.POST or None, instance=profile_object)
+    return render(request, 'users/profile.html', {'form': form})
+
+
+@login_required(login_url='users:login')
+def profile(request):
+    profile_object = get_object_or_404(Profile, user_id=request.user.id)
+    form = UserProfileForm(request.POST or None, instance=profile_object)
+    return render(request, 'users/profile.html', {'profile': profile_object, 'form': form})
 
 
 def signUp(request):

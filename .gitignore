@@ -1,2 +1,5 @@
 *.pyc
 *.pyo
+/images
+/venv
+/.idea

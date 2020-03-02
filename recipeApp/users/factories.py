@@ -1,14 +1,13 @@
 from datetime import datetime
-from recipeApp.users.models import Author
+from recipeApp.users.models import Profile
 
 
 class AuthorFactory:
 
     @staticmethod
     def create(user):
-        author = Author()
+        author = Profile()
         author.user = user
-        author.full_name = user.get_full_name()
         author.profile_info = ''
         author.profile_picture = None
         author.created_date = datetime.now()
