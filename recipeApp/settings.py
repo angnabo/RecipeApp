@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from .config import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'django_crispy_bulma'
+    'django_crispy_bulma',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.google.GoogleOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 ROOT_URLCONF = 'recipeApp.urls'
 
@@ -68,13 +78,18 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'recipeApp.wsgi.application'
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
+WSGI_APPLICATION = 'recipeApp.wsgi.application'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

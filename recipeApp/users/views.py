@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 
 from recipeApp.recipes.models import Recipe
-from recipeApp.users.factories import AuthorFactory
+from recipeApp.users.factories import ProfileFactory
 from recipeApp.users.forms import UserLoginForm, UserSignupForm, UserProfileForm
 from recipeApp.users.models import Profile
 
@@ -31,7 +31,13 @@ def edit_profile(request):
 
 @login_required(login_url='users:login')
 def profile(request):
-    profile_object = get_object_or_404(Profile, user_id=request.user.id)
+    try:
+        profile_object = Profile.objects.get(user_id=request.user.id)
+    except Profile.DoesNotExist:
+        new_profile = ProfileFactory.create(request.user)
+        new_profile.save()
+        profile_object = new_profile
+
     form = UserProfileForm(request.POST or None, instance=profile_object)
     return render(request, 'users/profile.html', {'profile': profile_object, 'form': form})
 
@@ -41,8 +47,8 @@ def signUp(request):
         form = UserSignupForm(request.POST)
         if form.is_valid():
             user = form.save()
-            author = AuthorFactory.create(user)
-            author.save()
+            new_profile = ProfileFactory.create(user)
+            new_profile.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username,  password=password)

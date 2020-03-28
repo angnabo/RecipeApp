@@ -6,7 +6,8 @@ from recipeApp import settings
 urlpatterns = [
     path('recipes/', include('recipeApp.recipes.urls')),
     path('users/', include('recipeApp.users.urls')),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('', include('social_django.urls', namespace='social'))
 ]
 
 if settings.DEBUG:
