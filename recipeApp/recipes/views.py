@@ -1,12 +1,16 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
+from django.template.loader import render_to_string
 
+from recipeApp.settings import *
 from recipeApp.recipes.factories import RecipeFactory, CommentFactory
 from recipeApp.recipes.forms import RecipeForm, CommentForm
+from recipeApp.utils import email_sender
 from .models import Recipe
-from ..users.models import Profile
 
 ORDER_BY_HEADERS = ('name', 'content', 'username', 'date')
 
@@ -35,8 +39,8 @@ def add(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
-            author = get_object_or_404(Profile, user_id=request.user.id)
-            recipe = RecipeFactory.create(form, author)
+            user = get_object_or_404(User, pk=request.user.id)
+            recipe = RecipeFactory.create(form, user)
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)
         else:
@@ -104,8 +108,18 @@ def add_comment(request, recipe_id):
     if form.is_valid():
         user = request.user
         recipe = get_object_or_404(Recipe, pk=recipe_id)
-        recipe = CommentFactory.create(form, recipe, user)
-        recipe.save()
+        comment = CommentFactory.create(form, recipe, user)
+        comment.save()
+
+        # send email
+        recipe_user_email = get_object_or_404(User, pk=recipe.user_id).email
+        subject = 'You received a comment on your recipe!'
+        try:
+            template = render_to_string("emails/comment_notification_email.html",
+                                        {'comment': comment, 'username': user.get_full_name()})
+            email_sender.send_email([recipe_user_email], subject, template)
+        except Exception as e:
+            print(e)
         return redirect('recipes:details', recipe_id=recipe_id)
     else:
         return redirect('recipes:details', recipe_id=recipe_id)

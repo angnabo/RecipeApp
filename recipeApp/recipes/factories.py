@@ -4,12 +4,12 @@ from datetime import datetime
 class RecipeFactory:
 
     @staticmethod
-    def create(form, author):
+    def create(form, user):
         form.full_clean()
         recipe = form.save(commit=False)
         recipe.created_date = datetime.now()
         recipe.likes = 0
-        recipe.author = author
+        recipe.user = user
         return recipe
 
 
