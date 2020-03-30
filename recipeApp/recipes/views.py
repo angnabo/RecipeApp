@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 from recipeApp.settings import *
 from recipeApp.recipes.factories import RecipeFactory, CommentFactory
@@ -25,13 +26,36 @@ def search(request):
     if not query or not query.strip():  # query is empty or whitespace
         recipe_list = Recipe.objects.all().order_by('-created_date')
         paginated_recipes = get_recipes(request, recipe_list)
-        context = {'recipe_list': paginated_recipes}
+        url = reverse('recipes:search')
+        context = {'recipe_list': paginated_recipes, 'title': 'Recipes', 'search_url': url}
         return render(request, 'recipes/index.html', context)
     else:
         recipe_list = Recipe.objects.filter(name__icontains=query, content__icontains=query).order_by('-created_date')
         paginated_recipes = get_recipes(request, recipe_list)
-        context = {'recipe_list': paginated_recipes, 'search_query': query}
+        url = reverse('recipes:search')
+        context = {'recipe_list': paginated_recipes, 'search_query': query, 'title': 'Recipes', 'search_url': url}
         return render(request, 'recipes/index.html', context)
+
+
+def get(request):
+    query = request.GET.get('query')
+    user_id = request.user.id
+    if not query or not query.strip():  # query is empty or whitespace
+        recipe_list = Recipe.objects.filter(user_id=user_id).order_by('-created_date')
+        paginated_recipes = get_recipes(request, recipe_list)
+        url = reverse('recipes:get')
+        context = {'recipe_list': paginated_recipes, 'title': 'Your recipes', 'search_url': url}
+        return render(request, 'recipes/index.html', context)
+    else:
+        recipe_list = Recipe.objects.filter(name__icontains=query, content__icontains=query, user_id=user_id).order_by('-created_date')
+        paginated_recipes = get_recipes(request, recipe_list)
+        url = reverse('recipes:get')
+        context = {'recipe_list': paginated_recipes, 'search_query': query, 'title': 'Your recipes', 'search_url': url}
+        return render(request, 'recipes/index.html', context)
+
+
+def activity(request):
+    return render(request, 'recipes/index.html')
 
 
 @login_required(login_url='users:login')

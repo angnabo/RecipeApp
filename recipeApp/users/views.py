@@ -3,11 +3,11 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-
-from recipeApp.recipes.models import Recipe
+from django.template.loader import render_to_string
 from recipeApp.users.factories import ProfileFactory
 from recipeApp.users.forms import UserLoginForm, UserSignupForm, UserProfileForm
 from recipeApp.users.models import Profile
+from recipeApp.utils import email_sender
 
 
 def index(request):
@@ -51,8 +51,18 @@ def signUp(request):
             new_profile.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=username,  password=password)
+            user = authenticate(username=username, password=password)
             login(request, user)
+
+            # TODO: get the site url
+            # send email
+            subject = 'You received a comment on your recipe!'
+            try:
+                template = render_to_string("emails/signup_email.html",
+                                            {'url': 'url', 'username': user.get_full_name()})
+                email_sender.send_email([user.email], subject, template)
+            except Exception as e:
+                print(e)
             return redirect('recipes:index')
     else:
         form = UserSignupForm()
