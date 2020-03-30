@@ -1,0 +1,14 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+    <div class="container page-container">
+        <h1 class="title">Activity</h1>
+
+        graph showing likes (filter by recipe)
+        comments
+        likes from users
+    </div>
+
+    {% include "_pagination.html" with list=recipe_list query=request.GET.query|urlencode %}
+
+{% endblock %}

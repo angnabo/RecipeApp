@@ -16,7 +16,7 @@
             <tr style="line-height:60px;">
                 <td style="width:50%"><a href="{% url 'recipes:details' recipe.id %}">{{ recipe.name }}</a></td>
                 <td>{{ recipe.likes }}</td>
-                <td>{{ recipe.author.full_name }}</td>
+                <td>{{ recipe.user.first_name }} {{ recipe.user.last_name }}</td>
                 <td>{{ recipe.created_date }}</td>
                 <td>
                     <a aria-label="view" class="button margin-top-10"
