@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from recipeApp.recipes.models import Like
+
 
 class RecipeFactory:
 
@@ -8,7 +10,6 @@ class RecipeFactory:
         form.full_clean()
         recipe = form.save(commit=False)
         recipe.created_date = datetime.now()
-        recipe.likes = 0
         recipe.user = user
         return recipe
 
@@ -24,3 +25,14 @@ class CommentFactory:
         comment.created_date = datetime.now()
         comment.user = user
         return comment
+
+
+class LikeFactory:
+
+    @staticmethod
+    def create(recipe, user):
+        like = Like()
+        like.recipe = recipe
+        like.created_date = datetime.now()
+        like.user = user
+        return like

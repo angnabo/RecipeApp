@@ -9,13 +9,15 @@
     <link rel="shortcut icon" href="{%  static 'images/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'bulma/css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'recipes.css' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'charts.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
     {% include "_navbar.html" %}
 
 </head>
 <body>
 <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-<script  src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
 {% block body %}{% endblock %}
 
 </body>

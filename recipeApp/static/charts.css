@@ -1,0 +1,11 @@
+.first-series {
+  /* Colour of your bars */
+  stroke: #129060 !important;
+  stroke-width: 20px;
+}
+
+.second-series {
+  /* Colour of your bars */
+  stroke: #c69835 !important;
+  stroke-width: 20px;
+}

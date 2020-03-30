@@ -1,17 +1,21 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
+from django.db.models import Count
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 
 from recipeApp.settings import *
-from recipeApp.recipes.factories import RecipeFactory, CommentFactory
+from recipeApp.recipes.factories import RecipeFactory, CommentFactory, LikeFactory
 from recipeApp.recipes.forms import RecipeForm, CommentForm
 from recipeApp.utils import email_sender
-from .models import Recipe
+from .models import Recipe, Like
 
 ORDER_BY_HEADERS = ('name', 'content', 'username', 'date')
 
@@ -21,6 +25,7 @@ def index(request):
     return search(request)
 
 
+@login_required(login_url='users:login')
 def search(request):
     query = request.GET.get('query')
     if not query or not query.strip():  # query is empty or whitespace
@@ -37,6 +42,7 @@ def search(request):
         return render(request, 'recipes/index.html', context)
 
 
+@login_required(login_url='users:login')
 def get(request):
     query = request.GET.get('query')
     user_id = request.user.id
@@ -47,15 +53,64 @@ def get(request):
         context = {'recipe_list': paginated_recipes, 'title': 'Your recipes', 'search_url': url}
         return render(request, 'recipes/index.html', context)
     else:
-        recipe_list = Recipe.objects.filter(name__icontains=query, content__icontains=query, user_id=user_id).order_by('-created_date')
+        recipe_list = Recipe.objects.filter(name__icontains=query, content__icontains=query, user_id=user_id).order_by(
+            '-created_date')
         paginated_recipes = get_recipes(request, recipe_list)
         url = reverse('recipes:get')
         context = {'recipe_list': paginated_recipes, 'search_query': query, 'title': 'Your recipes', 'search_url': url}
         return render(request, 'recipes/index.html', context)
 
 
+@login_required(login_url='users:login')
 def activity(request):
-    return render(request, 'recipes/index.html')
+    return render(request, 'recipes/activity.html')
+
+#
+# @login_required(login_url='users:login')
+# def get_recipe_likes_activity(request):
+#     user = get_object_or_404(User, pk=request.user.id)
+#     # group by date of likes
+#     recipes_by_likes = Recipe.objects.filter(user_id=user.id).annotate(num_likes=Count('likes')).order_by('-num_likes')[:6]
+#     date = datetime.now()+timedelta(days=-7)
+#     likes = list(Like.objects.filter(recipe__user_id=user.id, created_date__gt=date))
+#     json_data = dict()
+#     for l in likes:
+#         try:
+#             d = json_data.get(l.created_date)
+#             if d is None:
+#                 recipe_dict = dict()
+#                 recipe_dict[l.recipe.name] = 1
+#                 json_data[l.created_date.strftime("%m/%d/%Y")] = recipe_dict
+#             else:
+#                 date_value = json_data[l.created_date.strftime("%m/%d/%Y")]
+#                 recipes = date_value[l.recipe.name]
+#         except Exception as e:
+#             print(e)
+#
+#         json_data[l.created_date] = []
+#         likes_total = json_data[l.created_date][l.recipe.name]
+#         json_data[l.created_date][l.recipe.name] = likes_total+1
+#     return JsonResponse(json_data, safe=False)
+
+
+@login_required(login_url='users:login')
+def get_recipe_likes_activity(request):
+    user = get_object_or_404(User, pk=request.user.id)
+    # group by date of likes
+    recipes_by_likes = Recipe.objects.filter(user_id=user.id).annotate(num_likes=Count('likes')).order_by('-num_likes')[:6]
+    date = datetime.now()+timedelta(days=-7)
+    likes = list(Like.objects.filter(recipe__user_id=user.id, created_date__gt=date).order_by('created_date'))
+    json_data = dict()
+    for l in likes:
+        try:
+            likes_on_date = json_data.get(l.created_date.strftime("%m/%d/%Y"))
+            if likes_on_date is None:
+                json_data[l.created_date.strftime("%m/%d/%Y")] = 1
+            else:
+                json_data[l.created_date.strftime("%m/%d/%Y")] = likes_on_date+1
+        except Exception as e:
+            print(e)
+    return JsonResponse(json_data, safe=False)
 
 
 @login_required(login_url='users:login')
@@ -105,17 +160,10 @@ def details(request, recipe_id):
 
 @login_required(login_url='users:login')
 def like(request, recipe_id):
+    user = get_object_or_404(User, pk=request.user.id)
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    recipe.likes += 1
-    recipe.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-@login_required(login_url='users:login')
-def dislike(request, recipe_id):
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
-    recipe.likes -= 1
-    recipe.save()
+    new_like = LikeFactory.create(recipe, user)
+    new_like.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -147,4 +195,3 @@ def add_comment(request, recipe_id):
         return redirect('recipes:details', recipe_id=recipe_id)
     else:
         return redirect('recipes:details', recipe_id=recipe_id)
-

@@ -102,3 +102,13 @@ img.small-rounded {
 hr.solid {
   border-top: 1px solid #bbb;
 }
+
+.likes-chart-container{
+    max-height: 200px;
+    width: 600px;
+}
+
+.likes-chart{
+    width: 200px !important;
+    height: inherit !important;
+}

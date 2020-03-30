@@ -1,14 +1,89 @@
 {% extends "_layout.html" %}
 
 {% block body %}
+
     <div class="container page-container">
         <h1 class="title">Activity</h1>
 
-        graph showing likes (filter by recipe)
-        comments
-        likes from users
+        <div>
+            <label class="label">Likes on your recipes from the last few days</label>
+            <div data-url="{% url 'recipes:get_recipe_likes_activity' %}" class="likes-chart-container">
+               <canvas id="likes-chart"></canvas>
+            </div>
+
+        </div>
+
+
+{#        graph showing likes (filter by recipe)#}
+{#        comments#}
+{#        likes from users#}
     </div>
 
-    {% include "_pagination.html" with list=recipe_list query=request.GET.query|urlencode %}
+    <script>
+
+$(document).ready(function () {
+var ctx = document.getElementById('likes-chart').getContext('2d');
+
+getLikesData();
+
+    function getLikesData() {
+        var url = "{% url 'recipes:get_recipe_likes_activity' %}";
+        var dataset = [];
+        var labels = [];
+        $.get(url, function (data) {
+
+            for (var key in data) {
+                labels.push(key);
+                dataset.push(data[key]);
+            }
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '# of Likes',
+                        data: dataset,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }],
+                }, options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function (value) {
+                                    if (value % 1 === 0) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+
+    }
+
+
+
+})
+</script>
 
 {% endblock %}
