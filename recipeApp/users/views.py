@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
-from recipeApp.users.factories import ProfileFactory
-from recipeApp.users.forms import UserLoginForm, UserSignupForm, UserProfileForm
-from recipeApp.users.models import Profile
-from recipeApp.utils import email_sender
+from RecipeApp.recipeApp.users.factories import ProfileFactory
+from RecipeApp.recipeApp.users.forms import UserLoginForm, UserSignupForm, UserProfileForm
+from RecipeApp.recipeApp.users.models import Profile
+from RecipeApp.recipeApp.utils import email_sender
 
 
 def index(request):

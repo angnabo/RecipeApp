@@ -11,10 +11,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-from recipeApp.settings import *
-from recipeApp.recipes.factories import RecipeFactory, CommentFactory, LikeFactory
-from recipeApp.recipes.forms import RecipeForm, CommentForm
-from recipeApp.utils import email_sender
+from RecipeApp.recipeApp.settings import *
+from RecipeApp.recipeApp.recipes.factories import RecipeFactory, CommentFactory, LikeFactory
+from RecipeApp.recipeApp.recipes.forms import RecipeForm, CommentForm
+from RecipeApp.recipeApp.utils import email_sender
 from .models import Recipe, Like
 
 ORDER_BY_HEADERS = ('name', 'content', 'username', 'date')
