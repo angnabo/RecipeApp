@@ -4517,6 +4517,11 @@ a.box:active {
   color: whitesmoke;
 }
 
+.notification.is-primary.is-light {
+    background-color: #ebfffc !important;
+    color: #00947e !important;
+}
+
 .notification.is-primary {
   background-color: #00d1b2;
   color: #fff;

@@ -20,12 +20,20 @@
 
         <div class="box"><p class="whitespace-pre-wrap has-text-grey-darker">{{ recipe.content }}</p></div>
         <p>Author: {{ recipe.user.get_full_name }}</p>
-        <p>Likes: {{ recipe.likes }}</p>
+        <p>Likes: {{ recipe.likes.count }}</p>
 
-        <form class="padding-top-10" action="{% url 'recipes:like' recipe.id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" class="button" value="Like">
-        </form>
+        {% if recipe.user_id != user.id %}
+            {% if message %}
+                <div id="like-notification" class="notification is-primary is-light">
+                  <button class="delete" onclick="document.getElementById('like-notification').remove()"></button>
+                  {{ message }}
+                </div>
+            {% endif %}
+            <form action="{% url 'recipes:like' recipe.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="button" value="Like">
+            </form>
+        {% endif %}
 
         {% include "recipes/add_comment.html" with recipe_id=recipe.id %}
 

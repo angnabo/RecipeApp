@@ -4,7 +4,6 @@
 
     <div class="container page-container">
         <h1 class="title">Activity</h1>
-
         <div>
             <label class="label">Likes on your recipes from the last few days</label>
             <div data-url="{% url 'recipes:get_recipe_likes_activity' %}" class="likes-chart-container">
@@ -12,11 +11,6 @@
             </div>
 
         </div>
-
-
-{#        graph showing likes (filter by recipe)#}
-{#        comments#}
-{#        likes from users#}
     </div>
 
     <script>

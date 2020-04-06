@@ -133,9 +133,11 @@ def details(request, recipe_id):
 def like(request, recipe_id):
     user = get_object_or_404(User, pk=request.user.id)
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    new_like = LikeFactory.create(recipe, user)
-    new_like.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    has_user_like = recipe.likes.filter(user_id=user.id)
+    if not has_user_like:
+        new_like = LikeFactory.create(recipe, user)
+        new_like.save()
+    return render(request, 'recipes/recipe_details.html', {'recipe': recipe, 'message': 'You have already liked this recipe!'})
 
 
 def get_recipes(request, recipe_list):
