@@ -3,4 +3,4 @@
 /images
 /venv
 /.idea
-*recipeApp/config.py
+*.env
