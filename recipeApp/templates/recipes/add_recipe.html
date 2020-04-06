@@ -2,14 +2,38 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="container">
-    <h1 class="title">{{title}}</h1>
-    <form method="post" class="width-50">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <div class="field">
-            <button type="submit" class="button is-primary">Save</button>
-        </div>
-    </form>
-</div>
+    <div class="container">
+        <h1 class="title">{{ title }}</h1>
+        <form method="post" enctype="multipart/form-data" class="width-50">
+            {% csrf_token %}
+
+
+            {% if form.recipe_image %}
+                <div class="columns">
+                    <img id="recipe-img" src="{{ form.instance.recipe_image.url }}" class="recipe-image" alt="recipe image">
+                </div>
+            {% endif %}
+
+            <div class="field">
+                {{ form.name|as_crispy_field }}
+            </div>
+
+            <div class="field">
+                {{ form.content|as_crispy_field }}
+            </div>
+
+            <div class="field">
+                <label class="is-inline">Upload image:
+                    <input type="file" name="recipe_image"
+                           class="clearablefileinput"
+                           onchange="document.getElementById('recipe-img').src = window.URL.createObjectURL(this.files[0])"
+                           id="id_recipe_image">
+                </label>
+            </div>
+
+            <div class="field">
+                <button type="submit" class="button is-primary">Save</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

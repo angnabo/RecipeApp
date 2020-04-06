@@ -25,7 +25,7 @@
             </div>
 
             <div class="field">
-                <label class="is-inline">Re-upload profile picture:
+                <label class="is-inline">Upload profile picture:
                     <input type="file" name="profile_picture" class="clearablefileinput" id="id_profile_picture">
                 </label>
             </div>
@@ -34,14 +34,6 @@
                 <button type="submit" id="comment-submit" class="button is-primary is-pulled-right">Save</button>
             </div>
         </form>
-{#            <form action="{% url 'users:edit_profile' %}" enctype="multipart/form-data" method="post" class="width-50">#}
-{#                {% csrf_token %}#}
-{#                {{ form|crispy }}#}
-{#                <div class="field">#}
-{#                    <button type="submit" class="button is-primary">Save</button>#}
-{#                </div>#}
-{#            </form>#}
-
         </div>
 
     </div>

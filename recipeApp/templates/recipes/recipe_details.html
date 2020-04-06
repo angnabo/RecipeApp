@@ -11,6 +11,13 @@
                 <ion-icon name="trash"></ion-icon>
             </a>
         </div>
+
+        {% if recipe.recipe_image %}
+            <div class="columns">
+                <img src="{{ recipe.recipe_image.url }}" class="recipe-image" alt="recipe image">
+            </div>
+        {% endif %}
+
         <div class="box"><p class="whitespace-pre-wrap has-text-grey-darker">{{ recipe.content }}</p></div>
         <p>Author: {{ recipe.user.get_full_name }}</p>
         <p>Likes: {{ recipe.likes }}</p>

@@ -65,39 +65,9 @@ def get(request):
 def activity(request):
     return render(request, 'recipes/activity.html')
 
-#
-# @login_required(login_url='users:login')
-# def get_recipe_likes_activity(request):
-#     user = get_object_or_404(User, pk=request.user.id)
-#     # group by date of likes
-#     recipes_by_likes = Recipe.objects.filter(user_id=user.id).annotate(num_likes=Count('likes')).order_by('-num_likes')[:6]
-#     date = datetime.now()+timedelta(days=-7)
-#     likes = list(Like.objects.filter(recipe__user_id=user.id, created_date__gt=date))
-#     json_data = dict()
-#     for l in likes:
-#         try:
-#             d = json_data.get(l.created_date)
-#             if d is None:
-#                 recipe_dict = dict()
-#                 recipe_dict[l.recipe.name] = 1
-#                 json_data[l.created_date.strftime("%m/%d/%Y")] = recipe_dict
-#             else:
-#                 date_value = json_data[l.created_date.strftime("%m/%d/%Y")]
-#                 recipes = date_value[l.recipe.name]
-#         except Exception as e:
-#             print(e)
-#
-#         json_data[l.created_date] = []
-#         likes_total = json_data[l.created_date][l.recipe.name]
-#         json_data[l.created_date][l.recipe.name] = likes_total+1
-#     return JsonResponse(json_data, safe=False)
-
-
 @login_required(login_url='users:login')
 def get_recipe_likes_activity(request):
     user = get_object_or_404(User, pk=request.user.id)
-    # group by date of likes
-    recipes_by_likes = Recipe.objects.filter(user_id=user.id).annotate(num_likes=Count('likes')).order_by('-num_likes')[:6]
     date = datetime.now()+timedelta(days=-7)
     likes = list(Like.objects.filter(recipe__user_id=user.id, created_date__gt=date).order_by('created_date'))
     json_data = dict()
@@ -116,10 +86,11 @@ def get_recipe_likes_activity(request):
 @login_required(login_url='users:login')
 def add(request):
     if request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             user = get_object_or_404(User, pk=request.user.id)
-            recipe = RecipeFactory.create(form, user)
+            recipe = form.save(commit=False)
+            recipe.user = user
             recipe.save()
             return redirect('recipes:details', recipe_id=recipe.id)
         else:
@@ -133,7 +104,7 @@ def add(request):
 def edit(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     if request.method == 'POST':
-        form = RecipeForm(request.POST, instance=recipe)
+        form = RecipeForm(request.POST,  request.FILES, instance=recipe)
         if form.is_valid():
             form.full_clean()
             form.save()

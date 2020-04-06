@@ -85,6 +85,13 @@ footer {
     margin-top: 30px;
 }
 
+img.recipe-image {
+    max-height: 300px !important;
+    max-width: 1000px !important;
+    height:auto;
+    width:auto;
+}
+
 img.rounded {
   object-fit: cover;
   border-radius: 50%;

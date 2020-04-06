@@ -5,7 +5,7 @@ from recipeApp.recipes.models import Recipe, Comment
 class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
-        fields = ['name', 'content']
+        fields = ['name', 'content', 'recipe_image']
 
 
 class CommentForm(ModelForm):

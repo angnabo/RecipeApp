@@ -8,5 +8,5 @@ from recipeApp.files.models import ImageFile
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     profile_info = models.TextField(validators=[MinLengthValidator(1)], null=True, blank=True)
-    profile_picture = models.ImageField(upload_to='images/', null=True, blank=True, default='images/default-profile.png')
+    profile_picture = models.ImageField(upload_to='images/profiles/', null=True, blank=True, default='images/profiles/default-profile.png')
     created_date = models.DateTimeField('created_date')

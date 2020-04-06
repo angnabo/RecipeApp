@@ -22,7 +22,3 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['profile_info', 'profile_picture']
-
-# class UserProfileForm(forms.Form):
-#     profile_info = forms.CharField(widget=forms.Textarea, required=False)
-#     file = forms.ImageField(required=False)
